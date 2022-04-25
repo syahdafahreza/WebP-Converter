@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -27,10 +28,12 @@ public class MainUI extends javax.swing.JFrame {
      */
     public MainUI() {
         initComponents();
+        
     }
 
     //Create a file chooser
     final JFileChooser fc = new JFileChooser();
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,7 +46,7 @@ public class MainUI extends javax.swing.JFrame {
         btnconvert = new javax.swing.JButton();
         imgcontainer = new javax.swing.JLabel();
         btnbrowse = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        imgformatcombo = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         selectedfield = new javax.swing.JTextField();
 
@@ -52,6 +55,11 @@ public class MainUI extends javax.swing.JFrame {
         setResizable(false);
 
         btnconvert.setText("Convert Now!");
+        btnconvert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnconvertActionPerformed(evt);
+            }
+        });
 
         imgcontainer.setBackground(new java.awt.Color(255, 255, 255));
         imgcontainer.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -63,7 +71,12 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jpg", "Png" }));
+        imgformatcombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jpg", "Png" }));
+        imgformatcombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imgformatcomboActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Convert image to:");
 
@@ -82,15 +95,18 @@ public class MainUI extends javax.swing.JFrame {
                         .addComponent(imgcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnconvert))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(selectedfield)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnbrowse, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(imgformatcombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(selectedfield)
+                                .addGap(10, 10, 10)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnbrowse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnconvert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -106,7 +122,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnconvert)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(imgformatcombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -119,6 +135,7 @@ public class MainUI extends javax.swing.JFrame {
         //In response to a button click:
         //Handle open button action.
         BufferedImage img = null;
+        System.loadLibrary("webp-imageio");
     if (evt.getSource() == btnbrowse) {
         int returnVal = fc.showOpenDialog(this);
 
@@ -142,6 +159,31 @@ public class MainUI extends javax.swing.JFrame {
         }
     }
     }//GEN-LAST:event_btnbrowseActionPerformed
+
+    private void btnconvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconvertActionPerformed
+        // TODO add your handling code here:
+        File file = fc.getSelectedFile();
+        //This is where a real application would open the file.
+        String SelectedFile = file.toString();
+        File file1= new File(SelectedFile);
+        
+        File file2= new File("/home/rtm/Desktop/haha.png");  
+
+System.loadLibrary("webp-imageio");
+try {  
+    BufferedImage im = ImageIO.read(file1);   
+    ImageIO.write(im, "png", file2);  
+} catch (IOException e) {  
+    e.printStackTrace();  
+}  
+    }//GEN-LAST:event_btnconvertActionPerformed
+
+    private void imgformatcomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imgformatcomboActionPerformed
+        // TODO add your handling code here:
+        String Format = imgformatcombo.getSelectedItem().toString();
+        System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
+        System.out.println("String Format: " + Format);
+    }//GEN-LAST:event_imgformatcomboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,10 +221,10 @@ public class MainUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnbrowse;
+    public javax.swing.JButton btnbrowse;
     private javax.swing.JButton btnconvert;
     private javax.swing.JLabel imgcontainer;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> imgformatcombo;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField selectedfield;
     // End of variables declaration//GEN-END:variables
