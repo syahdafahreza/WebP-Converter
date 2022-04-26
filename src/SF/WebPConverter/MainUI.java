@@ -28,7 +28,7 @@ public class MainUI extends javax.swing.JFrame {
      */
     public MainUI() {
         initComponents();
-        
+        System.load("C:/Users/Administrator/Documents/GitHub/WebP-Converter/lib/webp-imageio.dll");
     }
 
     //Create a file chooser
@@ -71,7 +71,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        imgformatcombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Jpg", "Png" }));
+        imgformatcombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "jpg", "png" }));
         imgformatcombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 imgformatcomboActionPerformed(evt);
@@ -135,7 +135,6 @@ public class MainUI extends javax.swing.JFrame {
         //In response to a button click:
         //Handle open button action.
         BufferedImage img = null;
-        System.load("C:/Users/Administrator/Documents/GitHub/WebP-Converter/lib/webp-imageio.dll");
         
     if (evt.getSource() == btnbrowse) {
         int returnVal = fc.showOpenDialog(this);
@@ -166,14 +165,28 @@ public class MainUI extends javax.swing.JFrame {
         File file = fc.getSelectedFile();
         //This is where a real application would open the file.
         String SelectedFile = file.toString();
-        File file1= new File(SelectedFile);
         
-        File file2= new File("/home/rtm/Desktop/haha.png");  
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+ 
+        int userSelection = fileChooser.showSaveDialog(this);
+ 
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        
+        System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+        }
+        String Format = imgformatcombo.getSelectedItem().toString();
+        System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
+        System.out.println("String Format: " + Format);
+        File fileToSave = fileChooser.getSelectedFile();
+        String FileSave = fileToSave.toString()+"."+Format;
+        File file1= new File(SelectedFile);
+        File file2= new File(FileSave);  
 
-System.loadLibrary("webp-imageio");
 try {  
     BufferedImage im = ImageIO.read(file1);   
-    ImageIO.write(im, "png", file2);  
+    ImageIO.write(im, Format, file2);  
 } catch (IOException e) {  
     e.printStackTrace();  
 }  
