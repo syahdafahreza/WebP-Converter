@@ -135,7 +135,8 @@ public class MainUI extends javax.swing.JFrame {
         //In response to a button click:
         //Handle open button action.
         BufferedImage img = null;
-        System.loadLibrary("webp-imageio");
+        System.load("C:/Users/Administrator/Documents/GitHub/WebP-Converter/lib/webp-imageio.dll");
+        
     if (evt.getSource() == btnbrowse) {
         int returnVal = fc.showOpenDialog(this);
 
