@@ -8,7 +8,7 @@ import java.io.*;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
+import com.luciad.imageio.webp.*;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 /*
@@ -28,7 +28,9 @@ public class MainUI extends javax.swing.JFrame {
      */
     public MainUI() {
         initComponents();
-        System.load("C:/Users/Administrator/Documents/GitHub/WebP-Converter/lib/webp-imageio.dll");
+        //System.loadLibrary("webp-imageio");
+        //ImageIcon imageIcon = new ImageIcon(new ImageIcon("helpicon.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        //btnhelp.setIcon(imageIcon);
     }
 
     //Create a file chooser
@@ -49,10 +51,17 @@ public class MainUI extends javax.swing.JFrame {
         imgformatcombo = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         selectedfield = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        btnhelp = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("WebP Converter");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         btnconvert.setText("Convert Now!");
         btnconvert.addActionListener(new java.awt.event.ActionListener() {
@@ -83,6 +92,19 @@ public class MainUI extends javax.swing.JFrame {
         selectedfield.setEditable(false);
         selectedfield.setText("Please select your image...");
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Image preview");
+
+        btnhelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SF/WebPConverter/helpicon16px.png"))); // NOI18N
+        btnhelp.setFocusPainted(false);
+        btnhelp.setLabel("");
+        btnhelp.setPreferredSize(new java.awt.Dimension(23, 23));
+        btnhelp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnhelpActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -91,28 +113,33 @@ public class MainUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(imgcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnhelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(imgformatcombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                .addComponent(imgformatcombo, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnconvert))
+                            .addComponent(imgcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(selectedfield)
-                                .addGap(10, 10, 10)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnbrowse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnconvert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
+                                .addComponent(selectedfield, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnbrowse, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnhelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(imgcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -186,7 +213,8 @@ public class MainUI extends javax.swing.JFrame {
 
 try {  
     BufferedImage im = ImageIO.read(file1);   
-    ImageIO.write(im, Format, file2);  
+    ImageIO.write(im, Format, file2); 
+    selectedfield.setText("Converted successfully!");
 } catch (IOException e) {  
     e.printStackTrace();  
 }  
@@ -198,6 +226,16 @@ try {
         System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
         System.out.println("String Format: " + Format);
     }//GEN-LAST:event_imgformatcomboActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnhelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhelpActionPerformed
+        // TODO add your handling code here:
+        new AboutUI().setVisible(true);
+    }//GEN-LAST:event_btnhelpActionPerformed
 
     /**
      * @param args the command line arguments
@@ -237,8 +275,10 @@ try {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnbrowse;
     private javax.swing.JButton btnconvert;
+    private javax.swing.JButton btnhelp;
     private javax.swing.JLabel imgcontainer;
     private javax.swing.JComboBox<String> imgformatcombo;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField selectedfield;
     // End of variables declaration//GEN-END:variables
