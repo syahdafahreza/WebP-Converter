@@ -9,8 +9,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import com.luciad.imageio.webp.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.List;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.TransferHandler;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -28,9 +36,42 @@ public class MainUI extends javax.swing.JFrame {
      */
     public MainUI() {
         initComponents();
+        modifyLabel();
         //System.loadLibrary("webp-imageio");
         //ImageIcon imageIcon = new ImageIcon(new ImageIcon("helpicon.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         //btnhelp.setIcon(imageIcon);
+    }
+    
+    public void modifyLabel(){
+        TransferHandler th = new TransferHandler(){
+            @Override
+            public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
+                return true;
+            }
+
+            @Override
+            public boolean importData(JComponent comp, Transferable t) {
+                try {
+                    List<File> files = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
+                    for (File file : files){
+                        BufferedImage img = null;
+                        selectedfield.setText(file.toString());
+                        img = ImageIO.read(new File(file.toString()));
+                        Image dimg = img.getScaledInstance(imgcontainer.getWidth(), imgcontainer.getHeight(),
+                        Image.SCALE_SMOOTH);
+                        ImageIcon imageIcon = new ImageIcon(dimg);
+                        imgcontainer.setIcon(imageIcon);
+                        System.out.println(file.getName());
+                    }
+                } catch (UnsupportedFlavorException ex) {
+                    Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return true;
+            }
+        };
+        imgcontainer.setTransferHandler(th);
     }
 
     //Create a file chooser
@@ -170,8 +211,9 @@ public class MainUI extends javax.swing.JFrame {
             File file = fc.getSelectedFile();
             String FileInputName = fc.getSelectedFile().getName();
             //This is where a real application would open the file.
-            String SelectedFile = file.toString();
+            String SelectedFile = fc.getSelectedFile().toString();
             selectedfield.setText(SelectedFile);
+            System.out.println(file.getName());
             //FileInputName.replaceAll(".webp","");
             //System.out.println(FileInputName.replaceAll(".webp",""));
             try {
@@ -192,10 +234,10 @@ public class MainUI extends javax.swing.JFrame {
 
     private void btnconvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconvertActionPerformed
         // TODO add your handling code here:
-        File file = fc.getSelectedFile();
+        //File file = fc.getSelectedFile();
         //This is where a real application would open the file.
-        String SelectedFile = file.toString();
-        String FileInputName = fc.getSelectedFile().getName().toString();
+        String SelectedFile = selectedfield.getText();
+        String FileInputName = selectedfield.getText();
         String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
         System.out.println("FI Name Only: "+FINameOnly);
         JFileChooser fileChooser = new JFileChooser();
