@@ -168,9 +168,12 @@ public class MainUI extends javax.swing.JFrame {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
+            String FileInputName = fc.getSelectedFile().getName();
             //This is where a real application would open the file.
             String SelectedFile = file.toString();
             selectedfield.setText(SelectedFile);
+            //FileInputName.replaceAll(".webp","");
+            //System.out.println(FileInputName.replaceAll(".webp",""));
             try {
     img = ImageIO.read(new File(SelectedFile));
 } catch (IOException e) {
@@ -192,10 +195,12 @@ public class MainUI extends javax.swing.JFrame {
         File file = fc.getSelectedFile();
         //This is where a real application would open the file.
         String SelectedFile = file.toString();
-        
+        String FileInputName = fc.getSelectedFile().getName().toString();
+        String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
+        System.out.println("FI Name Only: "+FINameOnly);
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a file to save");   
- 
+        fileChooser.setSelectedFile(new File(FINameOnly));
         int userSelection = fileChooser.showSaveDialog(this);
  
         if (userSelection == JFileChooser.APPROVE_OPTION) {
