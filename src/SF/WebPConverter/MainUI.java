@@ -18,6 +18,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.TransferHandler;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -249,22 +250,33 @@ public class MainUI extends javax.swing.JFrame {
         File fileToSave = fileChooser.getSelectedFile();
         
         System.out.println("Save as file: " + fileToSave.getAbsolutePath());
-        }
+
         String Format = imgformatcombo.getSelectedItem().toString();
         System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
         System.out.println("String Format: " + Format);
-        File fileToSave = fileChooser.getSelectedFile();
         String FileSave = fileToSave.toString()+"."+Format;
         File file1= new File(SelectedFile);
         File file2= new File(FileSave);  
-
-try {  
-    BufferedImage im = ImageIO.read(file1);   
-    ImageIO.write(im, Format, file2); 
-    selectedfield.setText("Converted successfully!");
-} catch (IOException e) {  
-    e.printStackTrace();  
-}  
+        try {  
+            BufferedImage im = ImageIO.read(file1);   
+            ImageIO.write(im, Format, file2); 
+            //selectedfield.setText("Converted successfully!");
+            //default title and icon
+            JOptionPane.showMessageDialog(this,
+            "Image converted successfully!");
+} 
+        catch (IOException e) {  
+            e.printStackTrace();  
+}
+    }
+        else {
+        //selectedfield.setText("Canceled!");
+        //custom title, error icon
+        JOptionPane.showMessageDialog(this,
+        "You canceled the operation!",
+        "Message",
+        JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnconvertActionPerformed
 
     private void imgformatcomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imgformatcomboActionPerformed

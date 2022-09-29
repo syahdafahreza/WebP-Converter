@@ -6,6 +6,7 @@
 package SF.WebPConverter;
 import java.net.*;
 import java.awt.*;
+import java.time.Year;
 /**
  *
  * @author Umarkov
@@ -17,8 +18,13 @@ public class AboutUI extends javax.swing.JFrame {
      */
     public AboutUI() {
         initComponents();
+        labeltahunUpd();
     }
 
+    public void labeltahunUpd(){
+        int year = Year.now().getValue();
+        labelTahun.setText("©"+year+" Syahda Fahreza, All Rights Reserved.");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,7 +41,7 @@ public class AboutUI extends javax.swing.JFrame {
         Logo = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         licBtn = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
+        labelTahun = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("About");
@@ -80,8 +86,8 @@ public class AboutUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jLabel5.setText("©2022 Syahda Fahreza, All Rights Reserved.");
+        labelTahun.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        labelTahun.setText("Lorem ipsum dolor sit amet, consectetur adi");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,7 +101,7 @@ public class AboutUI extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSeparator2)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(labelTahun)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(licBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2)
@@ -119,7 +125,7 @@ public class AboutUI extends javax.swing.JFrame {
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelTahun, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(licBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -147,7 +153,7 @@ public class AboutUI extends javax.swing.JFrame {
     private void LogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LogoMouseClicked
         // TODO add your handling code here:
         try {
-        Desktop.getDesktop().browse(new URL("https://umarkovwebsite.com/").toURI());
+        Desktop.getDesktop().browse(new URL("https://umarkovweb.site").toURI());
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -194,9 +200,9 @@ public class AboutUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel labelTahun;
     private javax.swing.JButton licBtn;
     // End of variables declaration//GEN-END:variables
 }
