@@ -401,6 +401,13 @@ public class MainUI extends javax.swing.JFrame {
         JOptionPane.ERROR_MESSAGE);
         }
         }
+        else if (FileInputName.matches("Please select your image...") == true) {
+            //custom title, error icon
+            JOptionPane.showMessageDialog(this,
+            "No image is selected!",
+            "Can't proceed",
+            JOptionPane.ERROR_MESSAGE);
+        }
         else {
             String FINameOnly = FileInputName.substring(0,FileInputName.length()-4);
             System.out.println("FI Name Only: "+FINameOnly);
