@@ -122,7 +122,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        imgformatcombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "jpg", "png" }));
+        imgformatcombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "jpg", "png", "webp" }));
         imgformatcombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 imgformatcomboActionPerformed(evt);
@@ -239,8 +239,11 @@ public class MainUI extends javax.swing.JFrame {
         //This is where a real application would open the file.
         String SelectedFile = selectedfield.getText();
         String FileInputName = selectedfield.getText();
-        String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
-        System.out.println("FI Name Only: "+FINameOnly);
+        System.out.print("File is WebP: " );
+        System.out.println(FileInputName.matches("(.*).webp(.*)"));
+        if (FileInputName.matches("(.*).webp(.*)") == true) {
+            String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
+            System.out.println("FI Name Only: "+FINameOnly);
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a file to save");   
         fileChooser.setSelectedFile(new File(FINameOnly));
@@ -277,6 +280,168 @@ public class MainUI extends javax.swing.JFrame {
         "Message",
         JOptionPane.ERROR_MESSAGE);
         }
+        }
+        else if (FileInputName.matches("(.*).jfif(.*)") == true) {
+            String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
+            System.out.println("FI Name Only: "+FINameOnly);
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+        fileChooser.setSelectedFile(new File(FINameOnly));
+        int userSelection = fileChooser.showSaveDialog(this);
+ 
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        
+        System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+
+        String Format = imgformatcombo.getSelectedItem().toString();
+        System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
+        System.out.println("String Format: " + Format);
+        String FileSave = fileToSave.toString()+"."+Format;
+        File file1= new File(SelectedFile);
+        File file2= new File(FileSave);  
+        try {  
+            BufferedImage im = ImageIO.read(file1);   
+            ImageIO.write(im, Format, file2); 
+            //selectedfield.setText("Converted successfully!");
+            //default title and icon
+            JOptionPane.showMessageDialog(this,
+            "Image converted successfully!");
+} 
+        catch (IOException e) {  
+            e.printStackTrace();  
+}
+    }
+        else {
+        //selectedfield.setText("Canceled!");
+        //custom title, error icon
+        JOptionPane.showMessageDialog(this,
+        "You canceled the operation!",
+        "Message",
+        JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        else if (FileInputName.matches("(.*).jpeg(.*)") == true) {
+            String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
+            System.out.println("FI Name Only: "+FINameOnly);
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+        fileChooser.setSelectedFile(new File(FINameOnly));
+        int userSelection = fileChooser.showSaveDialog(this);
+ 
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        
+        System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+
+        String Format = imgformatcombo.getSelectedItem().toString();
+        System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
+        System.out.println("String Format: " + Format);
+        String FileSave = fileToSave.toString()+"."+Format;
+        File file1= new File(SelectedFile);
+        File file2= new File(FileSave);  
+        try {  
+            BufferedImage im = ImageIO.read(file1);   
+            ImageIO.write(im, Format, file2); 
+            //selectedfield.setText("Converted successfully!");
+            //default title and icon
+            JOptionPane.showMessageDialog(this,
+            "Image converted successfully!");
+} 
+        catch (IOException e) {  
+            e.printStackTrace();  
+}
+    }
+        else {
+        //selectedfield.setText("Canceled!");
+        //custom title, error icon
+        JOptionPane.showMessageDialog(this,
+        "You canceled the operation!",
+        "Message",
+        JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        else if (FileInputName.matches("(.*).tiff(.*)") == true) {
+            String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
+            System.out.println("FI Name Only: "+FINameOnly);
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+        fileChooser.setSelectedFile(new File(FINameOnly));
+        int userSelection = fileChooser.showSaveDialog(this);
+ 
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        
+        System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+
+        String Format = imgformatcombo.getSelectedItem().toString();
+        System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
+        System.out.println("String Format: " + Format);
+        String FileSave = fileToSave.toString()+"."+Format;
+        File file1= new File(SelectedFile);
+        File file2= new File(FileSave);  
+        try {  
+            BufferedImage im = ImageIO.read(file1);   
+            ImageIO.write(im, Format, file2); 
+            //selectedfield.setText("Converted successfully!");
+            //default title and icon
+            JOptionPane.showMessageDialog(this,
+            "Image converted successfully!");
+} 
+        catch (IOException e) {  
+            e.printStackTrace();  
+}
+    }
+        else {
+        //selectedfield.setText("Canceled!");
+        //custom title, error icon
+        JOptionPane.showMessageDialog(this,
+        "You canceled the operation!",
+        "Message",
+        JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        else {
+            String FINameOnly = FileInputName.substring(0,FileInputName.length()-4);
+            System.out.println("FI Name Only: "+FINameOnly);
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+        fileChooser.setSelectedFile(new File(FINameOnly));
+        int userSelection = fileChooser.showSaveDialog(this);
+ 
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        
+        System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+
+        String Format = imgformatcombo.getSelectedItem().toString();
+        System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
+        System.out.println("String Format: " + Format);
+        String FileSave = fileToSave.toString()+"."+Format;
+        File file1= new File(SelectedFile);
+        File file2= new File(FileSave);  
+        try {  
+            BufferedImage im = ImageIO.read(file1);   
+            ImageIO.write(im, Format, file2); 
+            //selectedfield.setText("Converted successfully!");
+            //default title and icon
+            JOptionPane.showMessageDialog(this,
+            "Image converted successfully!");
+} 
+        catch (IOException e) {  
+            e.printStackTrace();  
+}
+    }
+        else {
+        //selectedfield.setText("Canceled!");
+        //custom title, error icon
+        JOptionPane.showMessageDialog(this,
+        "You canceled the operation!",
+        "Message",
+        JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        
     }//GEN-LAST:event_btnconvertActionPerformed
 
     private void imgformatcomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imgformatcomboActionPerformed
