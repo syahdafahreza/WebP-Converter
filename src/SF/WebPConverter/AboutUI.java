@@ -6,6 +6,8 @@
 package SF.WebPConverter;
 import java.net.*;
 import java.awt.*;
+import java.time.Year;
+import java.time.YearMonth;
 /**
  *
  * @author Umarkov
@@ -35,7 +37,7 @@ public class AboutUI extends javax.swing.JFrame {
         Logo = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         licBtn = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
+        copyrightLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("About");
@@ -46,6 +48,11 @@ public class AboutUI extends javax.swing.JFrame {
             }
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
                 formWindowLostFocus(evt);
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
             }
         });
 
@@ -80,8 +87,10 @@ public class AboutUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jLabel5.setText("©2022 Syahda Fahreza, All Rights Reserved.");
+		// Get the current year
+        Year currentYear = Year.now();
+        copyrightLabel.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        copyrightLabel.setText("©"+currentYear+" Syahda Fahreza, All Rights Reserved.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,7 +104,7 @@ public class AboutUI extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSeparator2)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(copyrightLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(licBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2)
@@ -119,7 +128,7 @@ public class AboutUI extends javax.swing.JFrame {
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(copyrightLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(licBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -152,6 +161,13 @@ public class AboutUI extends javax.swing.JFrame {
         e.printStackTrace();
     }
     }//GEN-LAST:event_LogoMouseClicked
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        // Get the current year
+        //Year currentYear = Year.now();
+        //copyrightLabel.setText("©"+currentYear+" Syahda Fahreza, All Rights Reserved.");
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -191,10 +207,10 @@ public class AboutUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo;
+    private javax.swing.JLabel copyrightLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JButton licBtn;
