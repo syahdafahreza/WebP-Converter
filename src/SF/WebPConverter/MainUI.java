@@ -9,8 +9,17 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import com.luciad.imageio.webp.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.List;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.TransferHandler;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -28,9 +37,42 @@ public class MainUI extends javax.swing.JFrame {
      */
     public MainUI() {
         initComponents();
+        modifyLabel();
         //System.loadLibrary("webp-imageio");
         //ImageIcon imageIcon = new ImageIcon(new ImageIcon("helpicon.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         //btnhelp.setIcon(imageIcon);
+    }
+    
+    public void modifyLabel(){
+        TransferHandler th = new TransferHandler(){
+            @Override
+            public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
+                return true;
+            }
+
+            @Override
+            public boolean importData(JComponent comp, Transferable t) {
+                try {
+                    List<File> files = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
+                    for (File file : files){
+                        BufferedImage img = null;
+                        selectedfield.setText(file.toString());
+                        img = ImageIO.read(new File(file.toString()));
+                        Image dimg = img.getScaledInstance(imgcontainer.getWidth(), imgcontainer.getHeight(),
+                        Image.SCALE_SMOOTH);
+                        ImageIcon imageIcon = new ImageIcon(dimg);
+                        imgcontainer.setIcon(imageIcon);
+                        System.out.println(file.getName());
+                    }
+                } catch (UnsupportedFlavorException ex) {
+                    Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return true;
+            }
+        };
+        imgcontainer.setTransferHandler(th);
     }
 
     //Create a file chooser
@@ -80,7 +122,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        imgformatcombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "jpg", "png" }));
+        imgformatcombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "jpg", "png", "webp" }));
         imgformatcombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 imgformatcomboActionPerformed(evt);
@@ -96,8 +138,8 @@ public class MainUI extends javax.swing.JFrame {
         jLabel1.setText("Image preview");
 
         btnhelp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SF/WebPConverter/helpicon16px.png"))); // NOI18N
+        btnhelp.setAlignmentY(0.0F);
         btnhelp.setFocusPainted(false);
-        btnhelp.setLabel("");
         btnhelp.setPreferredSize(new java.awt.Dimension(23, 23));
         btnhelp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,48 +153,45 @@ public class MainUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnhelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(imgcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(selectedfield, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(152, 152, 152)
+                        .addComponent(btnhelp, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(imgcontainer, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(imgformatcombo, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(selectedfield, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnbrowse, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(imgformatcombo, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnconvert, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnconvert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnbrowse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnhelp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addComponent(imgcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(selectedfield))
-                    .addComponent(btnbrowse))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(imgformatcombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnconvert)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnhelp, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(imgcontainer, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnbrowse)
+                    .addComponent(selectedfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(imgformatcombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnconvert))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -171,9 +210,13 @@ public class MainUI extends javax.swing.JFrame {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
+            String FileInputName = fc.getSelectedFile().getName();
             //This is where a real application would open the file.
-            String SelectedFile = file.toString();
+            String SelectedFile = fc.getSelectedFile().toString();
             selectedfield.setText(SelectedFile);
+            System.out.println(file.getName());
+            //FileInputName.replaceAll(".webp","");
+            //System.out.println(FileInputName.replaceAll(".webp",""));
             try {
     img = ImageIO.read(new File(SelectedFile));
 } catch (IOException e) {
@@ -192,35 +235,220 @@ public class MainUI extends javax.swing.JFrame {
 
     private void btnconvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconvertActionPerformed
         // TODO add your handling code here:
-        File file = fc.getSelectedFile();
+        //File file = fc.getSelectedFile();
         //This is where a real application would open the file.
-        String SelectedFile = file.toString();
-        
+        String SelectedFile = selectedfield.getText();
+        String FileInputName = selectedfield.getText();
+        System.out.print("File is WebP: " );
+        System.out.println(FileInputName.matches("(.*).webp(.*)"));
+        if (FileInputName.matches("(.*).webp(.*)") == true) {
+            String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
+            System.out.println("FI Name Only: "+FINameOnly);
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify a file to save");   
- 
+        fileChooser.setSelectedFile(new File(FINameOnly));
         int userSelection = fileChooser.showSaveDialog(this);
  
         if (userSelection == JFileChooser.APPROVE_OPTION) {
         File fileToSave = fileChooser.getSelectedFile();
         
         System.out.println("Save as file: " + fileToSave.getAbsolutePath());
-        }
+
         String Format = imgformatcombo.getSelectedItem().toString();
         System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
         System.out.println("String Format: " + Format);
-        File fileToSave = fileChooser.getSelectedFile();
         String FileSave = fileToSave.toString()+"."+Format;
         File file1= new File(SelectedFile);
         File file2= new File(FileSave);  
+        try {  
+            BufferedImage im = ImageIO.read(file1);   
+            ImageIO.write(im, Format, file2); 
+            //selectedfield.setText("Converted successfully!");
+            //default title and icon
+            JOptionPane.showMessageDialog(this,
+            "Image converted successfully!");
+} 
+        catch (IOException e) {  
+            e.printStackTrace();  
+}
+    }
+        else {
+        //selectedfield.setText("Canceled!");
+        //custom title, error icon
+        JOptionPane.showMessageDialog(this,
+        "You canceled the operation!",
+        "Message",
+        JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        else if (FileInputName.matches("(.*).jfif(.*)") == true) {
+            String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
+            System.out.println("FI Name Only: "+FINameOnly);
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+        fileChooser.setSelectedFile(new File(FINameOnly));
+        int userSelection = fileChooser.showSaveDialog(this);
+ 
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        
+        System.out.println("Save as file: " + fileToSave.getAbsolutePath());
 
-try {  
-    BufferedImage im = ImageIO.read(file1);   
-    ImageIO.write(im, Format, file2); 
-    selectedfield.setText("Converted successfully!");
-} catch (IOException e) {  
-    e.printStackTrace();  
-}  
+        String Format = imgformatcombo.getSelectedItem().toString();
+        System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
+        System.out.println("String Format: " + Format);
+        String FileSave = fileToSave.toString()+"."+Format;
+        File file1= new File(SelectedFile);
+        File file2= new File(FileSave);  
+        try {  
+            BufferedImage im = ImageIO.read(file1);   
+            ImageIO.write(im, Format, file2); 
+            //selectedfield.setText("Converted successfully!");
+            //default title and icon
+            JOptionPane.showMessageDialog(this,
+            "Image converted successfully!");
+} 
+        catch (IOException e) {  
+            e.printStackTrace();  
+}
+    }
+        else {
+        //selectedfield.setText("Canceled!");
+        //custom title, error icon
+        JOptionPane.showMessageDialog(this,
+        "You canceled the operation!",
+        "Message",
+        JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        else if (FileInputName.matches("(.*).jpeg(.*)") == true) {
+            String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
+            System.out.println("FI Name Only: "+FINameOnly);
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+        fileChooser.setSelectedFile(new File(FINameOnly));
+        int userSelection = fileChooser.showSaveDialog(this);
+ 
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        
+        System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+
+        String Format = imgformatcombo.getSelectedItem().toString();
+        System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
+        System.out.println("String Format: " + Format);
+        String FileSave = fileToSave.toString()+"."+Format;
+        File file1= new File(SelectedFile);
+        File file2= new File(FileSave);  
+        try {  
+            BufferedImage im = ImageIO.read(file1);   
+            ImageIO.write(im, Format, file2); 
+            //selectedfield.setText("Converted successfully!");
+            //default title and icon
+            JOptionPane.showMessageDialog(this,
+            "Image converted successfully!");
+} 
+        catch (IOException e) {  
+            e.printStackTrace();  
+}
+    }
+        else {
+        //selectedfield.setText("Canceled!");
+        //custom title, error icon
+        JOptionPane.showMessageDialog(this,
+        "You canceled the operation!",
+        "Message",
+        JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        else if (FileInputName.matches("(.*).tiff(.*)") == true) {
+            String FINameOnly = FileInputName.substring(0,FileInputName.length()-5);
+            System.out.println("FI Name Only: "+FINameOnly);
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+        fileChooser.setSelectedFile(new File(FINameOnly));
+        int userSelection = fileChooser.showSaveDialog(this);
+ 
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        
+        System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+
+        String Format = imgformatcombo.getSelectedItem().toString();
+        System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
+        System.out.println("String Format: " + Format);
+        String FileSave = fileToSave.toString()+"."+Format;
+        File file1= new File(SelectedFile);
+        File file2= new File(FileSave);  
+        try {  
+            BufferedImage im = ImageIO.read(file1);   
+            ImageIO.write(im, Format, file2); 
+            //selectedfield.setText("Converted successfully!");
+            //default title and icon
+            JOptionPane.showMessageDialog(this,
+            "Image converted successfully!");
+} 
+        catch (IOException e) {  
+            e.printStackTrace();  
+}
+    }
+        else {
+        //selectedfield.setText("Canceled!");
+        //custom title, error icon
+        JOptionPane.showMessageDialog(this,
+        "You canceled the operation!",
+        "Message",
+        JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        else if (FileInputName.matches("Please select your image...") == true) {
+            //custom title, error icon
+            JOptionPane.showMessageDialog(this,
+            "No image is selected!",
+            "Can't proceed",
+            JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            String FINameOnly = FileInputName.substring(0,FileInputName.length()-4);
+            System.out.println("FI Name Only: "+FINameOnly);
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+        fileChooser.setSelectedFile(new File(FINameOnly));
+        int userSelection = fileChooser.showSaveDialog(this);
+ 
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+        File fileToSave = fileChooser.getSelectedFile();
+        
+        System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+
+        String Format = imgformatcombo.getSelectedItem().toString();
+        System.out.println("Value: " + imgformatcombo.getSelectedItem().toString());
+        System.out.println("String Format: " + Format);
+        String FileSave = fileToSave.toString()+"."+Format;
+        File file1= new File(SelectedFile);
+        File file2= new File(FileSave);  
+        try {  
+            BufferedImage im = ImageIO.read(file1);   
+            ImageIO.write(im, Format, file2); 
+            //selectedfield.setText("Converted successfully!");
+            //default title and icon
+            JOptionPane.showMessageDialog(this,
+            "Image converted successfully!");
+} 
+        catch (IOException e) {  
+            e.printStackTrace();  
+}
+    }
+        else {
+        //selectedfield.setText("Canceled!");
+        //custom title, error icon
+        JOptionPane.showMessageDialog(this,
+        "You canceled the operation!",
+        "Message",
+        JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        
     }//GEN-LAST:event_btnconvertActionPerformed
 
     private void imgformatcomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imgformatcomboActionPerformed
